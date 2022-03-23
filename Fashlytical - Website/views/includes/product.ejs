@@ -1,0 +1,39 @@
+<div class="el-wrapper">
+    <div class="box-up">
+        <img class="img" src="<%=product.imagePath %>" alt="Product IMG">
+        <div class="img-info">
+            <div class="info-inner">
+                <span class="p-name" style="overflow-wrap: break-word;">
+                    <%=product.title %> <span class="rating"><img src="images/shop/star-icon.png" class="star">
+                            <%= product.rating %>
+                        </span>
+                </span>
+                <span class="p-company">Made by Fashlytical</span>
+            </div>
+            <div class="a-size" style="overflow-wrap: break-word;">
+                <%=product.description %>
+            </div>
+        </div>
+    </div>
+    <div class="box-down">
+        <div class="h-bg">
+            <div class="h-bg-inner"></div>
+        </div>
+        <form action="/cart" method="POST">
+            <% if (!isAuthenticated) { %>
+                <a class="cart" href="/login">
+                    <span class="price">$<%=product.price %></span>
+                    <span class="add-to-cart">
+                        <span class="txtspan">Add to cart</span>
+                    </span></a>
+                <% } else { %>
+                    <a class="cart" href="/cart">
+                        <span class="price">$<%=product.price %></span>
+                        <span class="add-to-cart">
+                            <button class="txt" type="submit">Add to cart</button>
+                            <input type="hidden" name="productId" value="<%= product._id %>">
+                        </span></a>
+                    <% } %>
+        </form>
+    </div>
+</div>

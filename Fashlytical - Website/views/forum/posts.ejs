@@ -1,0 +1,254 @@
+<%- include('../includes/forumhead.ejs') %>
+    <div class="title-wrapper">
+        <div style="font-size: 40px; color: #099; margin-top: 20px;">
+            <%= topic.title %> Posts
+        </div>
+    </div>
+    <div class="container-fluid">
+        <main class="tm-main">
+            <div class="row tm-row">
+                <div class="postwrapper">
+                    <% if(posts.length> 0) { %>
+                        <% for(let i=0; i<posts.length; i++) { %>
+                            <article class="col-12 col-md-6 tm-post">
+                                <hr class="tm-hr-primary">
+                                <a href="/comments/<%= posts[i]._id %>" class="effect-lily tm-post-link tm-pt-60">
+                                    <div class="tm-post-link-inner">
+                                        <img src="/<%=posts[i].imagePath%>" alt="Post Image"
+                                            style="max-width: 500px; max-height: 300px; min-width: 400px;">
+                                    </div>
+                                    <span class="position-absolute tm-new-badge">#<%= number + i %></span>
+                                    <% if(isAuthenticated) { %>
+                                        <form method="POST" action="/likedislike" type="hidden">
+                                            <input type="hidden" value="<%= req.user._id %>" name="userId">
+                                            <input type="hidden" value="<%= posts[i]._id %>" name="postId">
+                                            <input type="hidden" value="<%= topic._id %>" name="topicId">
+                                            <% if (posts[i].rated.length> 0 && posts[i].rated.some(r => r.userId ===
+                                                req.user._id.toString())) { %>
+                                                <% for(let j=0; j<posts[i].rated.length; j++) { %>
+                                                    <% if (posts[i].rated[j].userId===req.user._id.toString() &&
+                                                        posts[i].rated[j].method==="like" ) { %>
+                                                        <button type="button" class="position-absolute like-badge"
+                                                            style="background-color: #00D100; cursor: context-menu;"
+                                                            name="like" value="Like">
+                                                            <i class="fas fa-thumbs-up"></i>
+                                                        </button>
+                                                        <button class="position-absolute dislike-badge" value="Dislike"
+                                                            name="method" type="submit"><i
+                                                                class="fas fa-thumbs-down"></i></button>
+                                                        <% } else if (posts[i].rated[j].userId===req.user._id.toString()
+                                                            && posts[i].rated[j].method==="dislike" ) { %>
+                                                            <button class="position-absolute like-badge" value="Like"
+                                                                name="method" type="submit"><i
+                                                                    class="fas fa-thumbs-up"></i></button>
+                                                            <button class="position-absolute dislike-badge"
+                                                                style="background-color: #e60e0e; cursor: context-menu;"
+                                                                value="Dislike" type="button"><i
+                                                                    class="fas fa-thumbs-down"></i></button>
+                                                            <% } } } else { %>
+                                                                <button class="position-absolute like-badge"
+                                                                    value="Like" name="method" type="submit"><i
+                                                                        class="fas fa-thumbs-up"></i></button>
+                                                                <button class="position-absolute dislike-badge"
+                                                                    value="Dislike" name="method" type="submit"><i
+                                                                        class="fas fa-thumbs-down"></i></button>
+                                                                <% } %>
+                                        </form>
+                                        <% } %>
+                                            <h2 class="tm-pt-30 tm-color-primary tm-post-title"
+                                                style="overflow-wrap: break-word;">
+                                                <%=posts[i].title %>
+                                            </h2>
+                                </a>
+                                <form method="POST" action="/userProfile">
+                                    <div class="d-flex justify-content-between tm-pt-20">
+                                        <input type="hidden" value="<%= posts[i].creator %>" name="creatorName">
+                                        <span class="tm-color-primary">Creator:<button class="custompfp" type="submit">
+                                                <%=posts[i].creator %>
+                                            </button></span>
+                                        <span class="tm-color-primary">Created at <%=posts[i].createdAt %></span>
+                                    </div>
+                                </form>
+                                <hr>
+                                <div>
+                                    <form method="POST" action="/posts" type="hidden">
+                                        <span style="text-align: right;">
+                                            <%= posts[i].countComments %> comments
+                                        </span><br>
+                                        <span style="text-align: right;">
+                                            <%= posts[i].likes %> likes
+                                        </span><br>
+                                        <span style="text-align: right;">
+                                            <%= posts[i].dislikes %> dislikes
+                                        </span>
+                                        <% if (isAuthenticated) { %>
+                                            <% if (req.user.role==="Admin" ) { %>
+                                                <input type="hidden" value="<%= posts[i]._id %>" name="postId">
+                                                <input type="hidden" value="<%= topic._id %>" name="topicId">
+                                                <a class="tm-btn tm-btn-primary-accept tm-btn-small"
+                                                    style="color: white; float: right; margin-left: 5px;"
+                                                    href="/posts/<%= topic._id %>/<%= posts[i]._id %>">Update</a>
+                                                <button class="tm-btn tm-btn-primary-forum tm-btn-small"
+                                                    style="float: right;" type="submit" value="Delete"
+                                                    name="method">Delete</button>
+                                                <% } %>
+                                                    <% if (req.user.role==="Moderator" && posts[i].creator !=="Nicroo" )
+                                                        { %>
+                                                        <input type="hidden" value="<%= posts[i]._id %>" name="postId">
+                                                        <input type="hidden" value="<%= topic._id %>" name="topicId">
+                                                        <a class="tm-btn tm-btn-primary-accept tm-btn-small"
+                                                            style="color: white; float: right; margin-left: 5px;"
+                                                            href="/posts/<%= topic._id %>/<%= posts[i]._id %>">Update</a>
+                                                        <button class="tm-btn tm-btn-primary-forum tm-btn-small"
+                                                            style="float: right;" type="submit" value="Delete"
+                                                            name="method">Delete</button>
+                                                        <% } %>
+                                                            <% if (req.user.role==="User" &&
+                                                                posts[i].creator===username) { %>
+                                                                <input type="hidden" value="<%= posts[i]._id %>"
+                                                                    name="postId">
+                                                                <input type="hidden" value="<%= topic._id %>"
+                                                                    name="topicId">
+                                                                <a class="tm-btn tm-btn-primary-accept tm-btn-small"
+                                                                    style="color: white; float: right; margin-left: 5px;"
+                                                                    href="/posts/<%= topic._id %>/<%= posts[i]._id %>">Update</a>
+                                                                <button class="tm-btn tm-btn-primary-forum tm-btn-small"
+                                                                    style="float: right;" type="submit" value="Delete"
+                                                                    name="method">Delete</button>
+                                                                <% } } %>
+                                    </form>
+                                </div>
+                            </article>
+                            <% } } else { %>
+                                <div class="NoContent-wrapper">
+                                    <p style="font-size: 40px; color: #ab0303; margin-top: 30px;">No Posts Yet!</p>
+                                </div>
+                                <% } %>
+                </div>
+            </div>
+            <% if (isAuthenticated) { %>
+                <div class="row tm-row tm-mt-100 tm-mb-75">
+                    <div class="tm-prev-next-wrapper">
+                        <button type="button" class="tm-btn tm-btn-primary tm-btn-small" data-toggle="modal" style="margin-left: -77px;"
+                            data-target="#PostModal">Create New Post</button>
+                    </div>
+                    <div class="tm-paging-wrapper">
+                        <nav class="tm-paging-nav d-inline-block">
+                            <ul>
+                                <li class="tm-paging-item">
+                                    <a class="mb-2 tm-btn tm-paging-link" id="left" name="left" value="left"
+                                        href="http://localhost:3000/posts/<%= topic._id %>?page=<%= previousPage %>"><i
+                                            class="fas fa-arrow-left"></i></a>
+                                </li>
+                                <li class="tm-paging-item">
+                                    <a class="mb-2 tm-btn tm-paging-link" id="right" name="right" value="right"
+                                        href="http://localhost:3000/posts/<%= topic._id %>?page=<%= nextPage %>"><i
+                                            class="fas fa-arrow-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Create New Post Modal -->
+                <div class="modal fade" id="PostModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close d-flex align-items-center justify-content-center"
+                                    data-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <% if (!req.user.profilePicture) { %>
+                                    <div class="icon d-flex align-items-center justify-content-center">
+                                        <img src="/images/shop/default.jpg" alt="Profile Picture"
+                                            style="height: 150px; width: 150px;" class="pfp">
+                                    </div>
+                                    <% } else { %>
+                                        <div class="icon d-flex align-items-center justify-content-center">
+                                            <img src="<%= user.profilePicture %>" alt="Profile Picture"
+                                                style="height: 150px; width: 150px;" class="pfp">
+                                        </div>
+                                        <% } %>
+                                            <h3 class="text-center mb-4"
+                                                style="color: #099; font-weight: 450; font-size: 35px;">
+                                                Create New Post</h3>
+                                            <form action="/posts/:<%= topic._id %>" method="POST"
+                                                enctype="multipart/form-data">
+                                                <input type="hidden" value="<%= topic._id %>" name="topicId">
+                                                <div class="form-group d-flex">
+                                                    <input type="text" id="title" name="title"
+                                                        class="form-control rounded-left" placeholder="Post Title"
+                                                        minlength="5" maxlength="30" required>
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <textarea class="form-control rounded-left" name="content"
+                                                        id="content" rows="8" minlength="20" maxlength="1500"
+                                                        placeholder="Post Content"
+                                                        style="max-height: 300px; min-height: 150px;"
+                                                        required></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <p style="font-size: 20px;">Add Post Picture:</p>
+                                                    <label for="image" class="tm-btn tm-btn-primary tm-btn-small"
+                                                        style="margin-right: 5px;">
+                                                        <input type="file" name="post" id="image"
+                                                            style="margin-bottom: 20px; display: none;">
+                                                        Choose File</label>
+                                                    <span><strong>Chosen File: </strong>
+                                                        <span id="msg">none</span></span><br>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="tm-btn tm-btn-primary tm-btn-small"
+                                                        style="position: relative; left: 31%;"
+                                                        onclick="checkEmpty()">Create
+                                                        Post</button>
+                                                </div>
+                                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } else { %>
+                    <div class="row tm-row tm-mt-100 tm-mb-75">
+                        <div class="tm-prev-next-wrapper"></div>
+                        <div class="tm-paging-wrapper" style="position: absolute; left: 50%;">
+                            <nav class="tm-paging-nav d-inline-block">
+                                <ul>
+                                    <li class="tm-paging-item">
+                                        <a class="mb-2 tm-btn tm-paging-link" id="left" name="left" value="left"
+                                            href="http://localhost:3000/posts/<%= topic._id %>?page=<%= previousPage %>"><i
+                                                class="fas fa-arrow-left"></i></a>
+                                    </li>
+                                    <li class="tm-paging-item">
+                                        <a class="mb-2 tm-btn tm-paging-link" id="right" name="right" value="right"
+                                            href="http://localhost:3000/posts/<%= topic._id %>?page=<%= nextPage %>"><i
+                                                class="fas fa-arrow-right"></i></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <% } %>
+                        <%- include('../includes/forumfooter.ejs') %>
+                            <a class="tm-btn tm-btn-primary tm-btn-small" href="/forum"><i class="fas fa-arrow-left"
+                                    style="margin-right: 10px; margin-left: -10px;"></i>Return to Topics</a>
+        </main>
+    </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forum-script.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/post.js"></script>
+    <script>
+        let pfp = document.getElementById('image');
+        let msg = document.getElementById('msg');
+        pfp.addEventListener('change', function (e) {
+            msg.textContent = e.target.files[0].name;
+        });
+    </script>
+    </body>
+
+    </html>

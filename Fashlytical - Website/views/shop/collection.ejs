@@ -1,0 +1,42 @@
+<%- include('../includes/head.ejs') %>
+    <!-- style css -->
+    <link rel="stylesheet" href="css/product.css" type="text/css">
+    </head>
+    <!-- body -->
+
+    <body class="main-layout">
+        <!-- header section start -->
+        <div class="header_section header_main">
+            <%- include('../includes/navigation.ejs') %>
+        </div>
+        <div class="collection_text">Fashlytical Collection - Page #<%= previousPage + 1%></div>
+        <!-- PROJECT COLLECTION -->
+        <main>
+            <div class="layout_padding gallery_section">
+                <% if (prods.length> 0) { %>
+                    <div class="wrapper">
+                        <% for (let i=0; i<prods.length; i++) { product=prods[i] %>
+                            <%- include('../includes/product.ejs') %>
+                                <% } %>
+                    </div>
+                    <% } %>
+                <div class="tm-paging-wrapper">
+                    <nav class="tm-paging-nav d-inline-block">
+                        <ul>
+                            <li class="tm-paging-item">
+                                <a class="mb-2 tm-btn tm-paging-link" id="left" name="left" value="left"
+                                    href="http://localhost:3000/collection?page=<%= previousPage %>"><i class="fa fa-arrow-left" style="margin-left: 15px; margin-top: 15px;"></i></a>
+                            </li>
+                            <li class="tm-paging-item">
+                                <a class="mb-2 tm-btn tm-paging-link" id="right" name="right" value="right"
+                                    href="http://localhost:3000/collection?page=<%= nextPage %>"><i class="fa fa-arrow-right" style="margin-left: 15px; margin-top: 15px;"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </main>
+        <%- include('../includes/footer.ejs') %>
+    </body>
+
+    </html>

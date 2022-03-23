@@ -1,0 +1,80 @@
+<%- include('../includes/forumhead.ejs') %>
+    <div class="title-wrapper">
+        <div style="font-size: 50px; color: #099; margin-top: 20px;">User Applications - Page <%= previousPage + 1 %></div>
+    </div>
+    <div class="container-fluid">
+        <main class="tm-main">
+            <div class="row tm-row tm-mb-45">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-55">
+                </div>
+            </div>
+            <div class="row tm-row">
+                <% if (users.length <=0) { %>
+                    <div class="col-12">
+                        <h2 class="tm-color-primary tm-post-title"
+                            style="margin-bottom: 80px; text-align: center; font-size: 40px;">No users yet!</h2>
+                    </div>
+                    <% } else { %>
+                        <% for (let i=0; i < users.length; i++) { %>
+                            <article class="col-12 col-md-6 tm-post">
+                                <hr class="tm-hr-primary">
+                                <div class="effect-lily tm-pt-60">
+                                    <span class="position-absolute tm-new-badge">User #<%= number + i %></span>
+                                </div>
+                                <p class="tm-pt-30" style="overflow-wrap: break-word;">
+                                    Username: <%= users[i].username %> <br>
+                                    Email: <%= users[i].email %> <br>
+                                    Role: <%= users[i].role %>
+                                </p>
+                                <div class="d-flex justify-content-between tm-pt-45">
+                                    <span class="tm-color-primary">ID: <%= users[i]._id %> </span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <form method="POST" action="/manageusers">
+                                        <input type="hidden" name="user_id" value="<%= users[i]._id %>">
+                                        <button class="tm-btn tm-btn-primary-forum tm-btn-small" value="remove"
+                                            name="remove" type="submit">Remove</button>
+                                        <% if (users[i].role === "Moderator") { %>
+                                            <button class="tm-btn tm-btn-primary-accept tm-btn-small" value="demote"
+                                                name="demote" type="submit">Demote</button>
+                                        <% } %>
+                                    </form>
+                                </div>
+                            </article>
+                            <% } %>
+                                <% } %>
+            </div>
+            <div class="row tm-row tm-mt-50 tm-mb-75">
+                        <div class="tm-prev-next-wrapper"></div>
+                        <div class="tm-paging-wrapper" style="position: absolute; left: 50%;">
+                            <nav class="tm-paging-nav d-inline-block">
+                                <ul>
+                                    <li class="tm-paging-item">
+                                        <a class="mb-2 tm-btn tm-paging-link" id="left" name="left" value="left"
+                                            href="http://localhost:3000/manageusers?page=<%= previousPage %>"><i
+                                                class="fas fa-arrow-left"></i></a>
+                                    </li>
+                                    <li class="tm-paging-item">
+                                        <a class="mb-2 tm-btn tm-paging-link" id="right" name="right" value="right"
+                                            href="http://localhost:3000/manageusers?page=<%= nextPage %>"><i
+                                                class="fas fa-arrow-right"></i></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+            <div class="row tm-row tm-mb-20">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-40">
+                </div>
+            </div>
+            <%- include('../includes/forumfooter.ejs') %>
+        </main>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/forum-script.js"></script>
+    </body>
+
+    </html>

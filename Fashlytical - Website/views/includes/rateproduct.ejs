@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="css/rating.css" type="text/css">
+<div class="el-wrapper">
+    <div class="box-up">
+        <img class="img" src="<%=product.imagePath %>" alt="Product IMG">
+        <div class="img-info">
+            <div class="info-inner">
+                <span class="p-name">
+                    <%=product.title %>
+                </span>
+                <span class="p-company">Made by Fashlytical</span>
+            </div>
+            <div class="a-size" style="overflow-wrap: break-word; font-size: 12px;">
+                <%=product.description %>
+            </div>
+        </div>
+    </div>
+    <% if (!isAuthenticated) { %>
+        <div class="login-msg">
+            <a href="/login">Log In Order to Rate</a>
+        </div>
+        <span class="current-rating"><img src="images/shop/star-icon.png" class="star"><%= product.rating %></span>
+        <% } else { %>
+            <form method="POST" action="/ratings">
+                <input type="hidden" value="<%= req.user._id %>" name="userId">
+                <input type="hidden" value="<%= product._id %>" name="productId">
+                <input type="hidden" value="<%= product.title %>" name="productName">
+                <div class="rating rating2">
+                    <button type="submit" value="5" name="rating" class="star-btn">★</button>
+                    <button type="submit" value="4" name="rating" class="star-btn">★</button>
+                    <button type="submit" value="3" name="rating" class="star-btn">★</button>
+                    <button type="submit" value="2" name="rating" class="star-btn">★</button>
+                    <button type="submit" value="1" name="rating" class="star-btn">★</button>
+                </div>
+            </form>
+            <span class="current-rating"><img src="images/shop/star-icon.png" class="star">
+                <%= product.rating %>
+            </span>
+            <% for(let j=0; j < rated.length; j++) { %>
+                <% if (rated[j].productId==product._id) { %>
+                    <span class="your-rating">You rated: <img src="images/shop/star-icon.png" class="star">
+                        <%= rated[j].rating %>
+                    </span>
+                    <% } %>
+                        <% } %>
+                            <% } %>
+</div>

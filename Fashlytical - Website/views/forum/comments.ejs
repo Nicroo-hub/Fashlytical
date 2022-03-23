@@ -1,0 +1,159 @@
+<%- include('../includes/forumhead.ejs') %>
+    <div class="container-fluid">
+        <div class="title-wrapper">
+            <div style="font-size: 40px; color: #099; margin-top: 20px;">
+                <%= post.title %> Comments
+            </div>
+        </div>
+        <main class="tm-main">
+            <div class="row tm-row">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-55">
+                    <img src="/<%=post.imagePath%>" alt="Post Image" class="post-img">
+                </div>
+            </div>
+            <div class="row tm-row">
+                <div class="col-lg-12 tm-post-col">
+                    <div class="tm-post-full">
+                        <form method="POST" action="/userprofile">
+                            <input type="hidden" value="<%= post.creator %>" name="creatorName">
+                            <div class="mb-4">
+                                <h2 class="pt-2 tm-color-primary tm-post-title" style="font-size: 30px;">
+                                    <%= post.title %>
+                                </h2>
+                                <p class="tm-mb-40" style="font-size: 25px;">
+                                    <%= post.createdAt %> posted by<button class="custompfp" type="submit">
+                                            <%= post.creator %>
+                                        </button>
+                                </p>
+                                <p style="font-size: 25px;">
+                                    <%= post.content %>
+                                </p>
+                            </div>
+                        </form>
+                        <!-- Comments -->
+                        <div>
+                            <h2 class="tm-color-primary tm-post-title">Comments</h2>
+                            <hr class="tm-hr-primary tm-mb-45">
+                            <% if(post.comments.length> 0) { %>
+                                <% for(let i=0; i<post.comments.length; i++) { %>
+                                    <div class="tm-comment tm-mb-45">
+                                        <figure class="comments-img">
+                                            <% if (!post.comments[i].creatorImg) { %>
+                                                <img src="/images/shop/default.jpg" alt="Comment Image"
+                                                    class="mb-2 rounded-circle img-thumbnail">
+                                                <% } else { %>
+                                                    <img src="<%= post.comments[i].creatorImg %>" alt="Comment Image"
+                                                        class="mb-2 rounded-circle img-thumbnail">
+                                                    <% } %>
+                                                        <figcaption class="tm-color-primary text-center">
+                                                            <%= post.comments[i].creator %>
+                                                        </figcaption>
+                                                        <span class="tm-color-primary"
+                                                            style="margin-left: 7px;">
+                                                            <%= post.comments[i].createdAt %>
+                                                        </span>
+                                        </figure>
+                                        <div>
+                                            <p class="comment-content">
+                                                <%= post.comments[i].content %>
+                                            </p>
+                                            <form method="POST" action="/comments">
+                                                <input type="hidden" value="<%= post._id %>" name="postId">
+                                                <input type="hidden" value="<%= post.comments[i].commentId %>" name="commentId">
+                                                <input type="hidden" value="" name="method">
+                                                <div>
+                                                    <% if (isAuthenticated) { %>
+                                                        <% if (req.user.role==="Admin" && req.user.username
+                                                            !==post.comments[i].creator) { %>
+                                                            <button
+                                                                class="tm-btn tm-btn-primary-forum tm-btn-small comments-btn"
+                                                                type="submit" id="Remove<%= i %>" onclick="setMethod(this.id, '<%= i %>')">Remove</button>
+                                                            <% } %>
+                                                                <% if (req.user.role==="Moderator" &&
+                                                                    post.comments[i].creator !=="Nicroo" &&
+                                                                    req.user.username !==post.comments[i].creator) { %>
+                                                                    <button
+                                                                        class="tm-btn tm-btn-primary-forum tm-btn-small comments-btn"
+                                                                        type="submit" id="Remove<%= i %>" onclick="setMethod(this.id, '<%= i %>')">Remove</button>
+                                                                    <% } %>
+                                                                        <% if
+                                                                            (req.user.username===post.comments[i].creator)
+                                                                            { %>
+                                                                            <button
+                                                                                class="tm-btn tm-btn-primary-forum tm-btn-small comments-btn"
+                                                                                type="submit" id="Remove<%= i %>" onclick="setMethod(this.id, '<%= i %>')">Remove</button>
+                                                                            <button
+                                                                                class="tm-btn tm-btn-primary-accept tm-btn-small comments-btn"
+                                                                                type="button" onclick="showTextarea('<%= i %>')">Update</button>
+                                                                            <textarea id="UpdateArea<%= i %>" placeholder="Enter New Comment" name="content" class="comment-textarea"
+                                                                            style="display: none; max-height: 300px; min-height: 100px;" maxlength="250"></textarea>
+                                                                            <button
+                                                                                class="tm-btn tm-btn-primary-accept tm-btn-small comments-btn" style="display: none; width: 150px;"
+                                                                                type="submit" id="Updatebtn<%= i %>" onclick="setMethod(this.id, '<%= i %>')">Update Comment</button>
+                                                                            <% } } %>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <% } } %>
+                                        <% if (isAuthenticated) { %>
+                                            <form action="/comments/<%= post._id %>" method="POST"
+                                                class="mb-5 tm-comment-form">
+                                                <h2 class="tm-color-primary tm-post-title mb-4">Add a Comment:</h2>
+                                                <textarea class="form-control" name="comment" id="comment" rows="8"
+                                                    minlength="1" maxlength="500" placeholder="Comment Content"
+                                                    style="max-height: 200px; min-height: 100px; width: 700px;"
+                                                    required></textarea>
+                                                <div class="mb-4"></div>
+                                                <div class="text-left">
+                                                    <button class="tm-btn tm-btn-primary tm-btn-small" type="submit">Add
+                                                        Comment</button>
+                                                </div>
+                                            </form>
+                                            <% } else { %>
+                                                <div class="mb-5">
+                                                    <h2 class="tm-color-primary tm-post-title mb-4">Add a Comment:</h2>
+                                                    <p>You must be logged in to comment.</p>
+                                                    <a class="tm-btn tm-btn-primary tm-btn-small" href="/login">Go to
+                                                        Login Page</a>
+                                                </div>
+                                                <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="tm-hr-primary tm-mb-55">
+            <%- include('../includes/forumfooter.ejs') %>
+                <a class="tm-btn tm-btn-primary tm-btn-small" href="/posts/<%= topicId %>"><i class="fas fa-arrow-left"
+                        style="margin-right: 10px; margin-left: -10px;"></i>Return to Posts</a>
+        </main>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forum-script.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/post.js"></script>   
+    <script>
+    function showTextarea(i) {
+        var textarea = document.getElementById("UpdateArea" + i).style.display;
+        var btn = document.getElementById('Updatebtn' + i).style.display;
+        if(textarea == "block" && btn == "block") {
+            document.getElementById('UpdateArea' + i).style.display = "none";
+            document.getElementById('Updatebtn' + i).style.display = "none";
+        } else {
+            document.getElementById('UpdateArea' + i).style.display = "block";
+            document.getElementById('Updatebtn' + i).style.display = "block";
+        }
+    }
+    function setMethod(btn_id, i) {
+        console.log(btn_id);
+        if(btn_id === "Remove" + i) {
+            document.getElementsByName("method")[i].value = "Remove";
+        } else if (btn_id === "Updatebtn" + i) {
+            document.getElementsByName("method")[i].value = "Update";
+        }
+    }
+    </script>
+    </body>
+
+    </html>

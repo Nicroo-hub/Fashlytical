@@ -1,0 +1,34 @@
+<%- include('../includes/forumhead.ejs') %>
+    <link rel="stylesheet" href="css/product.css" type="text/css">
+    <main class="tm-main">
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <div style="font-size: 55px; color: #099; margin-top: -60px; margin-bottom: 25px;">Rate Our Products</div>
+        </div>
+        <div class="row tm-row">
+            <div class="col-12">
+                <!-- Put here all products in shop -->
+                <hr class="tm-hr-primary tm-mb-55" style="width: 1220px;">
+                <div class="layout_padding gallery_section">
+                    <% if (products.length> 0) { %>
+                        <div class="wrapper-rating">
+                            <% for (let i=0; i<products.length; i++) { product=products[i] %>
+                                <%- include('../includes/rateproduct.ejs') %>
+                                    <% } %>
+                        </div>
+                        <% } %>
+                </div>
+                <hr class="tm-hr-primary tm-mb-55" style="width: 1220px;">
+            </div>
+        </div>
+        <%- include('../includes/forumfooter.ejs') %>
+            <a class="tm-btn tm-btn-primary tm-btn-small" href="/forum"><i class="fas fa-arrow-left"
+                    style="margin-right: 10px; margin-left: -10px;"></i>Return to Topics</a>
+    </main>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forum-script.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/post.js"></script>
+    </body>
+
+    </html>

@@ -1,0 +1,90 @@
+@media (min-width: 992px) and (max-width: 1199px) {
+    #main_slider a.carousel-control-prev {
+        display: none;
+    }
+    #main_slider a.carousel-control-next {
+        display: none;
+    }
+    .navbar-light .navbar-nav .nav-link {
+        font-size: 13pt;
+    }
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 0.5rem;
+        padding-left: 1.5rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .main-menu ul>li a {
+        padding: 7px 6px;
+    }
+    .main-menu ul>li a {
+        font-size: 14px;
+    }
+    .banner-main .carousel-caption h1 {
+        font-size: 36px;
+        padding-top: 0px;
+    }
+    .banner-main .carousel-caption p {
+        margin-bottom: 7px;
+        display: none;
+    }
+    #main_slider a.carousel-control-prev {
+        display: none;
+    }
+    #main_slider a.carousel-control-next {
+        display: none;
+    }
+    .banner_text {
+        font-size: 20pt;
+    }
+    .navbar-light .navbar-toggler {
+        color: #ffffff;
+        border-color: #fff;
+        background: white;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .banner-main .carousel-caption {
+        top: 0%;
+    }
+    #main_slider a.carousel-control-prev {
+        position: absolute;
+        left: 25%;
+        top: 64%;
+        display: none;
+    }
+    #main_slider a.carousel-control-next {
+        position: absolute;
+        left: 50px;
+        top: 64%;
+        display: none;
+    }
+    .banner-main .carousel-caption h1 {
+        font-size: 50px;
+    }
+    .navbar-light .navbar-toggler {
+        color: #ffffff;
+        border-color: #fff;
+        background: white;
+    }
+}
+
+@media (max-width: 575px) {
+    .carousel-caption {
+        display: none;
+    }
+    #main_slider a.carousel-control-prev {
+        position: absolute;
+        left: 175px;
+        top: 90%;
+        display: none;
+    }
+    #main_slider a.carousel-control-next {
+        position: absolute;
+        left: 236px;
+        top: 90%;
+        display: none;
+    }
+}

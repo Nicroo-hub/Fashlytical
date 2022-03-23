@@ -1,0 +1,66 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="css/product.css" type="text/css">
+    </head>
+    <!-- body -->
+
+    <body class="main-layout">
+        <!-- header section start -->
+        <div class="header_section header_main">
+            <%- include('../includes/navigation.ejs') %>
+        </div>
+        <!-- Cart section start -->
+        <div class="collection_text">Your Cart</div>
+        <main>
+            <div class="layout_padding gallery_section">
+                <% if (products.length> 0) { %>
+                    <div class="wrapper">
+                        <% for (let i=0; i<products.length; i++) { product=products[i] %>
+                            <div class="page-inner">
+                                <div class="row">
+                                    <div class="el-wrapper">
+                                        <div class="box-up">
+                                            <img class="img" src="<%=product.imagePath %>" alt="Product IMG">
+                                            <div class="img-info">
+                                                <div class="info-inner">
+                                                    <span class="p-name">
+                                                        <%=product.title %>
+                                                    </span>
+                                                    <span class="p-company">Quantity: <%= product.quantity %></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="box-down">
+                                            <div class="h-bg">
+                                                <div class="h-bg-inner"></div>
+                                            </div>
+                                            <form action="/cart-delete-item" method="POST">
+                                                <a class="cart" href="/cart">
+                                                    <span class="price">$<%=product.price %></span>
+                                                    <span class="add-to-cart">
+                                                        <button class="txt" type="submit">Remove From Cart</button>
+                                                        <input type="hidden" name="productId"
+                                                            value="<%= product._id %>">
+                                                    </span>
+                                                </a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
+                    <div class="TotalPrice">TotalPrice: $<%= totalPrice %>
+                    </div>
+                    <a href="/checkout" class="order_link">Order Now!</a>
+                    <form action="/cart-empty-cart" method="POST">
+                        <button class="orderbtn" type="submit" style="margin-left: 100px; margin-top: -100px;">Empty Cart</button>
+                    </form>
+                    <% } else { %>
+                        <h1 style="color: white; font-size: 48px; text-align: center; margin-bottom: 150px;">No Products in Cart!</h1>
+                        <% } %>
+            </div>
+        </main>
+        <%- include('../includes/footer.ejs') %>
+    </body>
+
+    </html>

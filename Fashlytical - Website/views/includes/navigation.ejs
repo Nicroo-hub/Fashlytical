@@ -1,0 +1,42 @@
+<!-- header section start -->
+<div class="header_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top: -40px; margin-left: -100px;">
+                    <a href="/"><img src="/images/shop/logo.png" class="logopng"></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" style="margin-right: 500px;"
+                        data-target="#navbarMobile" aria-controls="navbarMobile" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarMobile" style="background-color: #0c0116;">
+                        <div class="navbar-nav">
+                            <a class="nav-item nav-link" href="/">Home</a>
+                            <a class="nav-item nav-link" href="/collection">Collection</a>
+                            <% if (isAuthenticated) { %>
+                                <a class="nav-item nav-link" href="/cart">Cart</a>
+                                <a class="nav-item nav-link" href="/orders">Orders</a>
+                                <a class="nav-item nav-link" href="/forum">Forum</a>
+                                <% if (req.user.role==="Admin" ) { %>
+                                    <a class="nav-item nav-link" href="/manageproducts" style="font-size: 20px;">Manage Products</a>
+                                    <% } %>
+                                        <% } %>
+                                            <% if (!isAuthenticated) { %>
+                                                <a class="nav-item nav-link" href="/forum">Forum</a>
+                                                <a class="nav-item nav-link last" href="/login"><img
+                                                        src="images/shop/login.png" width=26px height=26px></a>
+                                                <% } else { %>
+                                                    <form action="/logout" method="POST">
+                                                        <button class="nav-item nav-link last"
+                                                            style="background-color:#0c0116" type="hidden"><img
+                                                                src="/images/shop/logout.png" width=26px
+                                                                height=26px></button>
+                                                    </form>
+                                                    <% } %>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>

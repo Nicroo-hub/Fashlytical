@@ -1,0 +1,5 @@
+על מנת להריץ את הפרויקט יש לפתוח את התיקיות Fashlytical - Website, Fashlytical - API בVisual Studio Code בצורה נפרדת עבור כל תיקייה. כדי להריץ כל תיקייה יש לרשום בקונסולה של הVisual Studio Code את הcommand הבא: npm start
+האתר רץ בכתובת:
+https://localhost:3000
+הAPI רץ בכתובת:
+https://localhost:8080

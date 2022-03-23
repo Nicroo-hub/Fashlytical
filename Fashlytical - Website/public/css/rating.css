@@ -1,0 +1,59 @@
+.rating {
+    width: 220px;
+    margin: 10px auto;
+    font-size: 45px;
+    overflow:hidden;
+}
+.star-btn {
+    float:right;
+    background-color: white;
+    color: #aaa;
+    text-decoration: none;
+    border: none;
+    outline:none !important;
+    -webkit-transition: color .4s;
+    -moz-transition: color .4s;
+    -o-transition: color .4s;
+    transition: color .4s;
+    margin-right: -8px;
+}
+.orange-btn {
+    color: orange;
+    cursor: pointer;
+}
+.star-btn:hover,
+.star-btn:hover ~ .star-btn,
+.star-btn:focus,
+.star-btn:focus ~ .star-btn	{
+    color: orange;
+    cursor: pointer;
+}
+.rating2 {
+    direction: ltr;
+}
+.current-rating {
+    margin-left: 165px;
+    font-size: 26px;
+}
+.your-rating {
+    margin-left: 127px;
+    font-size: 26px;
+}
+.star {
+    height: 35px;
+    width: 35px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+.login-msg a{
+    color: #aaa;
+    margin: 10px auto;
+    font-size: 25px;
+    overflow:hidden;
+    margin-left: 100px;
+    transition: color .4s;
+}
+.login-msg a:hover {
+    transform: scale(1.02);
+    color: #787773;
+}

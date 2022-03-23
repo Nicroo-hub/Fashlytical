@@ -1,0 +1,58 @@
+<%- include('../includes/forumhead.ejs') %>
+    <div class="title-wrapper">
+        <div style="font-size: 50px; color: #099; margin-top: 20px;">User Applications</div>
+    </div>
+    <div class="container-fluid">
+        <main class="tm-main">
+            <div class="row tm-row tm-mb-45">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-55">
+                </div>
+            </div>
+            <div class="row tm-row">
+                <% if (applications.length <=0) { %>
+                    <div class="col-12">
+                        <h2 class="tm-color-primary tm-post-title"
+                            style="margin-bottom: 80px; text-align: center; font-size: 40px;">No applications yet!</h2>
+                    </div>
+                    <% } else { %>
+                        <% for (let i=0; i < applications.length; i++) { %>
+                            <article class="col-12 col-md-6 tm-post">
+                                <hr class="tm-hr-primary">
+                                <div class="effect-lily tm-pt-60">
+                                    <span class="position-absolute tm-new-badge">App # <%= i + 1 %></span>
+                                </div>
+                                <p class="tm-pt-30" style="overflow-wrap: break-word;">
+                                    <%= applications[i].message %>
+                                </p>
+                                <div class="d-flex justify-content-between tm-pt-45">
+                                    <span class="tm-color-primary">By <%= applications[i].username %></span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <form method="POST" action="/applications">
+                                        <input type="hidden" name="application_id" value="<%=applications[i]._id%>">
+                                        <input type="hidden" name="application_user" value="<%=applications[i].email%>">
+                                        <button class="tm-btn tm-btn-primary-accept tm-btn-small" value="accepted"
+                                            name="accept" type="submit">Accept</button>
+                                        <button class="tm-btn tm-btn-primary-forum tm-btn-small" value="rejected"
+                                            name="reject" type="submit">Reject</button>
+                                    </form>
+                                </div>
+                            </article>
+                            <% } %>
+                                <% } %>
+            </div>
+            <div class="row tm-row tm-mb-20">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-40">
+                </div>
+            </div>
+            <%- include('../includes/forumfooter.ejs') %>
+        </main>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/forum-script.js"></script>
+    </body>
+
+    </html>

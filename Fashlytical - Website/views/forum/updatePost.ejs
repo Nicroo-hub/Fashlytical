@@ -1,0 +1,82 @@
+<%- include('../includes/forumhead.ejs') %>
+    <div class="title-wrapper">
+        <div style="font-size: 50px; color: #099; margin-top: 20px;">Fashlytical Update Post</div>
+    </div>
+    <!-- Update Topic Modal -->
+    <div style="padding-top: 75px; padding-left: 320px;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="icon d-flex align-items-center justify-content-center">
+                        <img src="/<%= post.imagePath %>" alt="Post Picture" class="update-img">
+                    </div>
+                    <h3 class="text-center mb-4"
+                        style="color: #099; font-weight: 450; font-size: 35px; margin-top: 10px;">Update Post</h3>
+                    <form method="POST" action="/posts/:<%= topic._id %>/:<%= post._id %>"
+                        enctype="multipart/form-data">
+                        <input type="hidden" value="<%= post._id %>" name="postId">
+                        <input type="hidden" value="<%= topic._id %>" name="topicId">
+                        <input type="hidden" value="<%= post.creator %>" name="creator">
+                        <div class="form-group d-flex">
+                            <input type="text" id="title" name="title" class="form-control rounded-left"
+                                placeholder="<%= post.title %>" minlength="5" maxlength="30" required>
+                        </div>
+                        <div class="form-group d-flex">
+                            <textarea class="form-control rounded-left" name="content" id="content" rows="8"
+                                minlength="20" maxlength="1500" placeholder="Post Content" style="max-height: 300px; min-height: 150px;"
+                                required><%= post.content %></textarea>
+                        </div>
+                        <div class="form-group">
+                            <p style="font-size: 20px;">Change Post Picture:</p>
+                            <p id="errorMessageUpdate"
+                                style="color: #e53935; position: absolute; left:41%; top: 72%; font-size: 20px;">
+                            </p>
+                            <label for="imageUpdate" class="tm-btn tm-btn-primary tm-btn-small"
+                                style="margin-right: 5px;">
+                                <input type="file" name="postimage" id="imageUpdate" placeholder="<%= post.imagePath %>"
+                                    style="margin-bottom: 20px; display: none;" required>
+                                Choose File</label>
+                            <span><strong>Chosen File: </strong>
+                                <span id="msgUpdate">none</span></span><br>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" value="Update" name="method"
+                                class="tm-btn tm-btn-primary tm-btn-small" style="position: relative; left: 31%;"
+                                onclick="checkEmptyUpdate()">Update Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div style="position: absolute; left:54%; padding-bottom: 20px;">
+            <%- include('../includes/forumfooter.ejs') %>
+        </div>
+        <a class="tm-btn tm-btn-primary tm-btn-small" href="/posts/<%= topic._id %>"
+            style="margin-left: 200px; margin-bottom: 50px;"><i class="fas fa-arrow-left"
+                style="margin-right: 10px; margin-left: -10px;"></i>Return to Posts</a>
+    </div>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/forum-script.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/post.js"></script>
+    <script>
+        let pfpUpdate = document.getElementById('imageUpdate');
+        let msgUpdate = document.getElementById('msgUpdate');
+        pfpUpdate.addEventListener('change', function (e) {
+            msgUpdate.textContent = e.target.files[0].name;
+        });
+    </script>
+    <script>
+        function checkEmptyUpdate() {
+            var errorMessageUpdate = document.getElementById('errorMessageUpdate');
+            var imageUpdate = document.getElementById('imageUpdate');
+            if (imageUpdate.files.length === 0) {
+                errorMessageUpdate.innerHTML = "Please select a picture!";
+            } else {
+                errorMessageUpdate.innerHTML = "";
+            }
+        }
+    </script>
+    </body>
+
+    </html>

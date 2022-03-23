@@ -1,0 +1,117 @@
+<%- include('../includes/forumhead.ejs') %>
+    <div class="title-wrapper">
+        <div style="font-size: 50px; color: #099; margin-top: 20px;">
+            <%= username %>'s Profile
+        </div>
+    </div>
+    <div class="container-fluid">
+        <main class="tm-main">
+            <div class="row tm-row tm-mb-45">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-20">
+                </div>
+            </div>
+            <div class="row tm-row tm-mb-40">
+                <div class="col-12">
+                    <div class="mb-4">
+                        <div class="tm-color-primary tm-post-title">
+                            <h2 style="font-size: 50px; font-weight: 400; margin-bottom: 40px;">
+                                <u style="text-decoration-thickness: 3px;">
+                                    <%= user.username %>'s Profile Information
+                                </u>:
+                            </h2>
+                            <h3 style="margin-bottom: 40px;">Username: <%= user.username %>
+                            </h3>
+                            <h3 style="margin-bottom: 40px;">Email: <%= user.email %>
+                            </h3>
+                            <h3 style="margin-bottom: 40px;">Role: <%= req.user.role %>
+                            </h3>
+                            <h3 style="margin-bottom: 40px;">Total Posts Created: <%= numPosts %>
+                            </h3>
+                            <% if(user.role==="Moderator" || user.role==="Admin" ) { %>
+                                <h3 style="margin-bottom: 40px;">Total Topics Created: <%= numTopics %>
+                                </h3>
+                                <% } %>
+                                    <h3 style="margin-bottom: 40px;">Total Posts Liked: <%= numLikes %>
+                                    </h3>
+                                    <h3 style="margin-bottom: 40px;">Total Posts Disliked: <%= numDislikes %>
+                                    </h3>
+                                    <% if (user.profilePicture !== null) { %>
+                                        <h3 style="margin-bottom: 40px; position: absolute; left: 60%; top: 15%;">
+                                            <%= user.username %>'s Profile Picture
+                                        </h3>
+                                        <img src="<%= user.profilePicture %>" alt="Profile Picture" class="pfp"
+                                            style="position: absolute; left: 58%; top: 24%;">
+                                        <form action="/profile" method="POST" enctype="multipart/form-data">
+                                            <h4 style="margin-bottom: 20px; position: absolute; left:60%; top: 77%;">
+                                                Update
+                                                Profile Picture:</h4>
+                                            <label class="tm-btn tm-btn-primary tm-btn-small"
+                                                style="margin-right: 5px; margin-bottom: 20px; position: absolute; left:60%; top: 85%;"><input
+                                                    type="file" name="image" id="image"
+                                                    style="margin-bottom: 20px; display: none;">Choose
+                                                File</label><span><strong
+                                                    style="position: absolute; left:75%; top: 86%;">Chosen File:
+                                                </strong>
+                                                <span id="msg"
+                                                    style="position: absolute; left:87%; top: 86%;">none</span></span><br>
+                                            <button class="tm-btn tm-btn-primary tm-btn-small" type="submit"
+                                                style="position: absolute; left:60%; top: 98%;">Update Profile
+                                                Picture</button>
+                                            <p id="errorMessage"
+                                                style="color: #e53935; position: absolute; left:82%; top: 99%;">
+                                                <%= errorMessage %>
+                                            </p>
+                                        </form>
+                                        <% } else { %>
+                                            <form action="/profile" method="POST" enctype="multipart/form-data">
+                                                <h3 style="position: absolute; left:62%; top: 15%;">You Don't have a
+                                                    <br>
+                                                    profile picture yet!<%= user.profilePicture %>
+                                                </h3>
+                                                <h4
+                                                    style="margin-bottom: 20px; position: absolute; left:62%; top: 30%;">
+                                                    Add
+                                                    Profile Picture:</h4>
+                                                <label class="tm-btn tm-btn-primary tm-btn-small"
+                                                    style="margin-right: 5px; margin-bottom: 20px; position: absolute; left:61%; top: 42%;"><input
+                                                        type="file" name="image" id="image"
+                                                        style="margin-bottom: 20px; display: none;">Choose
+                                                    File</label><span><strong
+                                                        style="position: absolute; left:76%; top: 43%;">Chosen File:
+                                                    </strong>
+                                                    <span id="msg"
+                                                        style="position: absolute; left:88%; top: 43%;">none</span></span><br>
+                                                <button class="tm-btn tm-btn-primary tm-btn-small" type="submit"
+                                                    style="position: absolute; left:61%; top: 55%;">Add Profile
+                                                    Picture</button>
+                                                <p id="errorMessage"
+                                                    style="color: #e53935; position: absolute; left:82%; top: 56%;">
+                                                    <%= errorMessage %>
+                                                </p>
+                                            </form>
+                                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row tm-row tm-mb-40" style="margin-top: 80px;">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-20">
+                </div>
+            </div>
+            <%- include('../includes/forumfooter.ejs') %>
+        </main>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/forum-script.js"></script>
+    <script>
+        let pfp = document.getElementById('image');
+        let msg = document.getElementById('msg');
+        pfp.addEventListener('change', function (e) {
+            msg.textContent = e.target.files[0].name;
+        });
+    </script>
+    </body>
+
+    </html>

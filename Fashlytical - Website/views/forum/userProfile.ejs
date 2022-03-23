@@ -1,0 +1,83 @@
+<%- include('../includes/forumhead.ejs') %>
+    <div class="title-wrapper">
+        <div style="font-size: 50px; color: #099; margin-top: 20px;">
+            <%= username %>'s Profile
+        </div>
+    </div>
+    <div class="container-fluid">
+        <main class="tm-main">
+            <div class="row tm-row tm-mb-45">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-20">
+                </div>
+            </div>
+            <div class="row tm-row tm-mb-40">
+                <div class="col-12">
+                    <div class="mb-4">
+                        <div class="tm-color-primary tm-post-title">
+                            <h2 style="font-size: 50px; font-weight: 400; margin-bottom: 40px;">
+                                <u style="text-decoration-thickness: 3px;">
+                                    <%= user.username %>'s Profile Information
+                                </u>:
+                            </h2>
+                            <h3 style="margin-bottom: 40px;">Username: <%= user.username %>
+                            </h3>
+                            <h3 style="margin-bottom: 40px;">Email: <%= user.email %>
+                            </h3>
+                            <h3 style="margin-bottom: 40px;">Role: <%= user.role %>
+                            </h3>
+                            <h3 style="margin-bottom: 40px;">Total Posts Created: <%= numPosts %>
+                            </h3>
+                            <% if (user.role==="Moderator" || user.role==="Admin") { %>
+                                <h3 style="margin-bottom: 40px;">Total Topics Created: <%= numTopics %>
+                                </h3>
+                                <% } %>
+                                    <h3 style="margin-bottom: 40px;">Total Posts Liked: <%= numLikes %>
+                                    </h3>
+                                    <h3 style="margin-bottom: 40px;">Total Posts Disliked: <%= numDislikes %>
+                                    </h3>
+                                    <% if (user.profilePicture !=null) { %>
+                                        <h3 style="margin-bottom: 40px; position: absolute; left: 60%; top: 15%;">
+                                            <%= user.username %>'s Profile Picture
+                                        </h3>
+                                        <img src="<%= user.profilePicture %>" alt="Profile Picture" class="pfp"
+                                            style="position: absolute; left: 58%; top: 24%;">
+                                        <a class="tm-btn tm-btn-primary tm-btn-small"
+                                            style="position: absolute; left:60%; top: 98%;" href="/forum">Return to
+                                            Topics
+                                            Page</a>
+                                        <% } else { %>
+                                            <h3 style="margin-bottom: 40px; position: absolute; left: 60%; top: 15%;">
+                                                <%= user.username %>'s Profile Picture
+                                            </h3>
+                                            <img src="" alt="Profile Picture" class="pfp"
+                                                style="position: absolute; left: 58%; top: 24%;">
+                                            <a class="tm-btn tm-btn-primary tm-btn-small"
+                                                style="position: absolute; left:60%; top: 98%;" href="/forum">Return to
+                                                Topics
+                                                Page</a>
+                                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row tm-row tm-mb-40" style="margin-top: 80px;">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-20">
+                </div>
+            </div>
+            <%- include('../includes/forumfooter.ejs') %>
+        </main>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/forum-script.js"></script>
+    <script>
+        let pfp = document.getElementById('image');
+        let msg = document.getElementById('msg');
+        pfp.addEventListener('change', function (e) {
+            msg.textContent = e.target.files[0].name;
+        });
+    </script>
+    </body>
+
+    </html>

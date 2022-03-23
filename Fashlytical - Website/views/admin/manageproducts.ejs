@@ -1,0 +1,226 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    </head>
+
+    <body>
+        <!-- header section start -->
+        <div class="header_section" style="background-repeat: repeat;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top: -40px; margin-left: -100px;">
+                            <a href="/"><img src="images/shop/logo.png" class="logopng"></a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" style="margin-right: 500px;"
+                                data-target="#navbarMobile" aria-controls="navbarMobile"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarMobile">
+                                <div class="navbar-nav">
+                                    <a class="nav-item nav-link" href="/">Home</a>
+                                    <a class="nav-item nav-link" href="/collection">Collection</a>
+                                    <a class="nav-item nav-link" href="/cart">Cart</a>
+                                    <a class="nav-item nav-link" href="/orders">Orders</a>
+                                    <a class="nav-item nav-link" href="/forum">Forum</a>
+                                    <a class="nav-item nav-link" href="/manageproducts" style="font-size: 20px;">Manage Products</a>
+                                    <form action="/logout" method="POST">
+                                        <button class="nav-item nav-link last"
+                                            style="background-color:#0c0116" type="hidden"><img
+                                                src="images/shop/logout.png" width=26px
+                                                height=26px></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="limiter">
+                <div class="container-login100">
+                    <button class="more_bt" style="margin-left: -1100px; width: 15%; position: absolute; top: 20%; text-align: center;" onclick="toggleImport()">Import-Product</button>
+                    <p class="buy_bt" type="button" style="width: 25%; height: 35px; margin-left: 1000px; position: absolute; top: 15%; right: 16%; text-align: center;">Fashlytical Products - Page <%= previousPage + 1 %></p>
+                    <!-- Container for products -->
+                    <div class="products-container">
+                        <% for(let i=0; i<products.length; i++) { %>
+                            <form class="login100-form validate-form" action="/manageproducts" method="POST" enctype="multipart/form-data">
+                                <div class="single-product" style="border: 1px solid transparent;">
+                                    <input type="hidden" value="<%= products[i]._id %>" name="productId">
+                                    <p style="font-size: 16px;">Product ID: <%= products[i]._id %></p>
+                                    <p style="font-size: 14px;">Product Name: <%= products[i].title %></p>
+                                    <button class="tm-btn tm-btn-primary-accept tm-btn-small"
+                                    style="color: white; float: left;" type="button" id="Updatebtn" onclick="showUpdate('<%= JSON.stringify(products[i]) %>')">Update</button>
+                                    <button class="tm-btn tm-btn-primary-forum tm-btn-small"
+                                        style="float: right; margin-right: 50px;" type="submit" value="Delete"
+                                        name="method">Delete</button>
+                                </div>
+                            </form>
+                        <% } %>
+                        <nav class="tm-paging-nav d-inline-block">
+                            <ul style="position: absolute; left: 43%; top: 80%;">
+                                <li class="tm-paging-item">
+                                    <a class="mb-2 tm-btn tm-paging-link" id="left" name="left" value="left"
+                                        href="http://localhost:3000/manageproducts?page=<%= previousPage %>"><i
+                                            class="fa fa-arrow-left"></i></a>
+                                </li>
+                                <li class="tm-paging-item">
+                                    <a class="mb-2 tm-btn tm-paging-link" id="right" name="right" value="right"
+                                        href="http://localhost:3000/manageproducts?page=<%= nextPage %>"><i
+                                            class="fa fa-arrow-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- Container for Import products -->
+                    <div class="wrap-login100" id="import-product" style="width: 750px; margin-top: 100px; margin-left: -1100px; height: 650px;">
+                        <div class="login100-pic js-tilt" style="margin-left: -100px; margin-top: 75px;" data-tilt>
+                            <img src="images/shop/logo-black.png" alt="Image">
+                        </div>
+                        <form class="login100-form validate-form" action="/import-product" method="POST"  enctype="multipart/form-data">
+                            <span class="login100-form-title" style="margin-left: 275px; position: absolute; top: 35%; width: 15%; padding-top: 15px;">
+                                Import Product
+                            </span>
+                            <div class="wrap-input100 validate-input" style="position: absolute; top: 45%; left: 18%; width: 20%;">
+                                <input class="input100" type="text" name="title" id="title" placeholder="title" minlength="10" maxlength="30" required>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="wrap-input100 validate-input" style="position: absolute; top: 52%; left: 18%; width: 20%;">
+                                <input class="input100" type="number" max="99999" name="price" id="price" step="0.01" required
+                                    placeholder="price">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-usd" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div style="position: absolute; top: 59%; left: 18%; width: 25%;">
+                                <label class="login100-form-btn" style="cursor: pointer; left: 20%; width: 40%;"><input type="file" name="productImage" id="productImage" required>Choose Picture
+                                </label>
+                                <span style="position: absolute; left: 42%; top: 16.5%;"><strong>Chosen File: </strong>
+                                <span id="msg">none</span></span>
+                                <p id="errorMessage" style="color: #e53935; position: absolute; left:42%; top: 50%; font-size: 16px;"></p>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-picture-o" style="margin-bottom: 10px; margin-left: -25px;" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="wrap-input100 validate-input" style="position: absolute; top: 66%; left: 18%; width: 20%;">
+                                <textarea class="input100" type="text" name="description" id="description"
+                                    placeholder="Description" style="min-height: 150px; max-height: 150px;" minlength="20" maxlength="170" required></textarea>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-text-width" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="container-login100-form-btn" style="position: absolute; top: 82%; left: 18%; width: 20%;">
+                                <button class="login100-form-btn" type="submit" onClick="checkEmpty()">
+                                    Import Product
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Container for Updating products -->
+                    <div class="wrap-login100" id="update-product" style="display: none; width: 750px; margin-top: 100px; margin-left: -1100px; height: 650px;">
+                        <div class="login100-pic js-tilt" style="margin-left: -100px; margin-top: 75px;" data-tilt>
+                            <img src="images/shop/logo-black.png" alt="Image">
+                        </div>
+                        <form class="login100-form validate-form" action="/manageproducts" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" value="" id="UpdateInput" name="productId">
+                            <span class="login100-form-title" style="margin-left: 275px; position: absolute; top: 35%; width: 15%; padding-top: 15px;">
+                                Update Product
+                            </span>
+                            <div class="wrap-input100 validate-input" style="position: absolute; top: 45%; left: 18%; width: 20%;">
+                                <input class="input100" type="text" name="title" id="titleUpdate" placeholder="New Title" minlength="10" maxlength="30" required>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="wrap-input100 validate-input" style="position: absolute; top: 52%; left: 18%; width: 20%;">
+                                <input class="input100" type="number" name="price" id="priceUpdate" step="0.01" max="99999" required
+                                    placeholder="New Price">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-usd" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div style="position: absolute; top: 59%; left: 18%; width: 25%;">
+                                <label class="login100-form-btn-update" style="cursor: pointer; left: 20%; width: 40%;"><input type="file" name="productImage" id="updateImage" required>Update Picture
+                                </label>
+                                <span style="position: absolute; left: 42%; top: 16.5%;"><strong>Chosen File: </strong>
+                                <span id="updatemsg">none</span></span>
+                                <p id="errorUpdateMessage" style="color: #e53935; position: absolute; left:42%; top: 50%; font-size: 16px;"></p>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-picture-o" style="margin-bottom: 10px; margin-left: -25px;" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="wrap-input100 validate-input" style="position: absolute; top: 66%; left: 18%; width: 20%;">
+                                <textarea class="input100" type="text" name="description" id="descriptionUpdate"
+                                    placeholder="New Description" style="min-height: 150px; max-height: 150px;" minlength="20" maxlength="170" required></textarea>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-text-width" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="container-login100-form-btn" style="position: absolute; top: 82%; left: 18%; width: 20%;">
+                                <button class="login100-form-btn-update" type="submit" onClick="checkEmptyUpdate()" name="method" value="Update">
+                                    Update Product
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <script>
+            let productpic = document.getElementById('productImage');
+            let msg = document.getElementById('msg');
+            productpic.addEventListener('change', function (e) {
+                msg.textContent = e.target.files[0].name;
+            });
+        </script>
+        <script>
+            let updatepic = document.getElementById('updateImage');
+            let updatemsg = document.getElementById('updatemsg');
+            updatepic.addEventListener('change', function (e) {
+                updatemsg.textContent = e.target.files[0].name;
+            });
+        </script>
+        <script>
+            function checkEmpty() {
+                var errorMessage = document.getElementById('errorMessage');
+                var productimage = document.getElementById('productImage');
+                if (productimage.files.length === 0) {
+                    errorMessage.innerHTML = "Please select a picture!";
+                } else {
+                    errorMessage.innerHTML = "";
+                }
+            }
+            function checkEmptyUpdate() {
+                var errorMessage = document.getElementById('errorUpdateMessage');
+                var productimage = document.getElementById('updateImage');
+                if (productimage.files.length === 0) {
+                    errorMessage.innerHTML = "Please select a picture!";
+                } else {
+                    errorMessage.innerHTML = "";
+                }
+            }
+        </script>
+        <script>
+            function showUpdate(product) {
+                console.log(product);
+                var updateContainer = document.getElementById("update-product").style.display;
+                var importContainer = document.getElementById("import-product").style.display;
+                document.getElementById("import-product").style.display = "none";
+                document.getElementById("update-product").style.display = "block";
+                document.getElementById("UpdateInput").value = product.substring(8,32);
+            }
+            function toggleImport() {
+                var importContainer = document.getElementById("import-product").style.display;
+                document.getElementById("import-product").style.display = "block";
+                document.getElementById("update-product").style.display = "none";
+            }
+        </script>
+    </body>
+    </html>

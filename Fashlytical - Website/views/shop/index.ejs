@@ -1,0 +1,184 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+    <!-- body -->
+
+    <body class="main-layout">
+        <!-- header section start -->
+        <%- include('../includes/navigation.ejs') %>
+            <div class="banner_section">
+                <div class="container-fluid">
+                    <section class="slide-wrapper">
+                        <div class="container-fluid">
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                                </ol>
+                                <!-- Wrapper for slides -->
+                                <% if (prods.length> 0) { %>
+                                    <% for (let i=0; i<1; i++) { product=prods[i] %>
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <div class="row">
+                                                    <div class="col-sm-2 padding_0"></div>
+                                                    <div class="col-sm-5">
+                                                        <form action="/cart" method="POST">
+                                                            <div class="banner_title">
+                                                                <h1 class="banner_text" style="overflow-wrap: break-word;">
+                                                                    <%= product.title %> <span class="rating"><img
+                                                                                src="images/shop/star-icon.png"
+                                                                                class="star">
+                                                                            <%= product.rating %>
+                                                                        </span>
+                                                                </h1>
+                                                                <p class="description_text" style="overflow-wrap: break-word;">
+                                                                    <%= product.description %>
+                                                                </p>
+                                                                <% if(isAuthenticated) { %>
+                                                                    <button class="buy_bt" type="submit">Buy
+                                                                        Now</button>
+                                                                    <% } %>
+                                                                        <input type="hidden" name="productId"
+                                                                            value="<%= product._id %>">
+                                                                        <button class="more_bt" type="button"><a
+                                                                                href="/collection" type="hidden"
+                                                                                class="link_bt">See More</a></button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="col-sm-5">
+                                                        <div class="shoes_img"><img src="<%=product.imagePath %>"
+                                                                class="prod_img"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                                <% for (let i=1; i<4; i++) { product=prods[i] %>
+                                                    <div class="carousel-item">
+                                                        <div class="row">
+                                                            <div class="col-sm-2 padding_0 "></div>
+                                                            <div class="col-sm-5 ">
+                                                                <form action="/cart" method="POST">
+                                                                    <div class="banner_title">
+                                                                        <h1 class="banner_text" style="overflow-wrap: break-word;">
+                                                                            <%= product.title %> <span
+                                                                                    class="rating"><img
+                                                                                        src="images/shop/star-icon.png"
+                                                                                        class="star">
+                                                                                    <%= product.rating %>
+                                                                                </span>
+                                                                        </h1>
+                                                                        <p class="description_text" style="overflow-wrap: break-word;">
+                                                                            <%= product.description %>
+                                                                        </p>
+                                                                        <% if(isAuthenticated) { %>
+                                                                            <button class="buy_bt" type="submit">Buy
+                                                                                Now</button>
+                                                                            <% } %>
+                                                                                <input type="hidden" name="productId"
+                                                                                    value="<%= product._id %>">
+                                                                                <button class="more_bt" type="button"><a
+                                                                                        href="/collection" type="hidden"
+                                                                                        class="link_bt">See
+                                                                                        More</a></button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="col-sm-5 ">
+                                                                <div class="shoes_img "><img
+                                                                        src="<%=product.imagePath %>" class="prod_img">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% } %>
+                                        </div>
+                                        <% } %>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            </div>
+            <!-- New collection section start -->
+            <div class="layout_padding collection_section">
+                <div class="container">
+                    <h1 class="new_text"><strong>New Collection</strong></h1>
+                    <p class="con_text">Get a taste of our new products!</p>
+                    <% if (prods.length> 0) { %>
+                        <div class="collection_section_2">
+                                <div class="row" style="width: 1500px; margin-left: -115px;">
+                        <% for (let i=4; i<6; i++) { product=prods[i] %>
+                                    <div class="col-md-4" style="margin-left: 100px;">
+                                        <div class="about-img" style="width: 470px; height: 510px;">
+                                            <button class="new_bt"><a href="/collection"
+                                                    style="color: white;">New</a></button>
+                                            <div class="shoes-img "><img src="<%=product.imagePath %>"
+                                                    style="max-width: 240px; max-height: 240px;"
+                                                    class="additional_img"></div>
+                                            <p class="sport_text" style="overflow-wrap: break-word;">
+                                                <%= product.title %>
+                                            </p>
+                                            <div class="dollar_text">$<strong style="color: #f12a47;">
+                                                    <%= product.price %>
+                                                </strong></div>
+                                            <span class="rating"><img src="images/shop/star-icon.png" class="star"
+                                                    style="margin-left: 190px;">
+                                                <%= product.rating %>
+                                            </span>
+                                        </div>
+                                        <button class="seemore_bt" style="margin-left: 62px;"><a href="/collection" class="link_bt2">See
+                                                More</a></button>
+                                    </div>
+                            <% } %>
+                        </div>
+                            </div>
+                        <% } %>
+                </div>
+            </div>
+            <% if (prods.length> 0) { %>
+                <% for (let i=6; i<7; i++) { product=prods[i] %>
+                    <div class="collection_section">
+                        <div class="container">
+                            <h1 class="new_text"><strong>
+                                    <%= product.title %> <span class="rating"><img src="images/shop/star-icon.png"
+                                                class="star">
+                                            <%= product.rating %>
+                                        </span>
+                                </strong></h1>
+                            <p class="con_text">The Most Exclusive and New Fashion Product!</p>
+                        </div>
+                    </div>
+                    <div class="collection_section_3 layuot_padding">
+                        <div class="container">
+                            <div class="racing_shoes">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="shoes-img3">
+                                            <img src="<%=product.imagePath %>"
+                                                style="height: 500px; width: 500px;"
+                                                class="additional_img">
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-4 ">
+                                        <div class="sale_text "><strong>Huge Sale<br><span style="color: #0a0506; overflow-wrap: break-word;">
+                                                    <%= product.title %>
+                                                </span></div>
+                                        <div class="number_text "><strong>$ <span style="color: #0a0506 ">
+                                                    <%= product.price %>
+                                                </span></strong></div>
+                                        <button class="seemore"><a href="/collection" class="link_bt2">See
+                                                More</a></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }} %>
+                        <%- include('../includes/footer.ejs') %>
+    </body>
+
+    </html>

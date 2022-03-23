@@ -1,0 +1,46 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="css/product.css" type="text/css">
+    </head>
+    <!-- body -->
+
+    <body class="main-layout">
+        <!-- header section start -->
+        <div class="header_section header_main">
+            <%- include('../includes/navigation.ejs') %>
+        </div>
+        <!-- Checkout section -->
+        <div class="collection_text">Checkout</div>
+        <main>
+        <div class="layout_padding gallery_section">
+            <div class="CheckoutContainer">
+                <div class="totalPriceOrder">
+                    Total Price: $<%= totalPrice %> <br>
+                        Products:
+                </div>
+                <% products.forEach(product=> { %>
+                    <ul class="products">
+                        <li class="checkout__products">
+                            <%= product.title %> (Quantity:
+                                <%= product.quantity %>)
+                        </li>
+                    </ul>
+                    <% }) %> 
+            </div><br>
+            <div>
+                <button class="orderbtn" id="order-button" onClick="RedirectToCheckout()">Checkout</button>
+                <input type="hidden" value="<%= sessionURL %>" id="URL">
+                <script src="https://js.stripe.com/v3/"></script>
+                <script>
+                    var stripe = Stripe('pk_test_51JzNUYDIdf7QkuotvK8LqfjLHUV53nkQh0JFjNcc9ZNhawh3wQriVqeGiNnO6UywMASUAASqBHI7ASrjdC8X9ISt00JCnumFAO');
+                    function RedirectToCheckout() {
+                        var url = document.getElementById('URL').value;
+                        location.replace(url);
+                    }
+                </script>
+            </div>
+        </div>
+        </main>
+        <%- include('../includes/footer.ejs') %>
+    </body>
+
+    </html>

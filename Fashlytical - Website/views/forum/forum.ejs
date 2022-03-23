@@ -1,0 +1,219 @@
+<%- include('../includes/forumhead.ejs') %>
+    <div class="title-wrapper">
+        <div style="font-size: 50px; color: #099; margin-top: 20px;">Fashlytical Topics</div>
+    </div>
+    <div class="container-fluid">
+        <main class="tm-main">
+            <div class="row tm-row">
+                <div class="topicwrapper">
+                    <% if(topics.length> 0) { %>
+                        <% for(let i=0; i<topics.length; i++) { %>
+                            <article class="col-12 col-md-6 tm-post">
+                                <hr class="tm-hr-primary">
+                                <a href="/posts/<%= topics[i]._id %>" class="effect-lily tm-post-link tm-pt-60">
+                                    <div class="tm-post-link-inner">
+                                        <img src="<%=topics[i].imagePath %>" alt="Topic Image"
+                                            style="max-width: 500px; max-height: 500px; min-width: 400px;">
+                                    </div>
+                                    <span class="position-absolute tm-new-badge">#<%= number + i %></span>
+                                    <h2 class="tm-pt-30 tm-color-primary tm-post-title"
+                                        style="overflow-wrap: break-word;">
+                                        <%= topics[i].title %>
+                                    </h2>
+                                </a>
+                                <p class="tm-pt-30" style="overflow-wrap: break-word;">
+                                    <%= topics[i].description %>
+                                </p>
+                                <form method="POST" action="/userProfile">
+                                    <div class="d-flex justify-content-between tm-pt-20">
+                                        <input type="hidden" value="<%= topics[i].creator %>" name="creatorName">
+                                        <span class="tm-color-primary">Creator:<button class="custompfp" type="submit">
+                                                <%= topics[i].creator %>
+                                            </button></span>
+                                        <span class="tm-color-primary">Created at <%= topics[i].createdAt %></span>
+                                    </div>
+                                </form>
+                                <hr>
+                                <div>
+                                    <form method="POST" action="/topic" type="hidden">
+                                        <span style="text-align: right;">
+                                            <%= topics[i].countPosts %> posts
+                                        </span>
+                                        <% if (isAuthenticated) { %>
+                                            <% if (req.user.role==="Admin" ) { %>
+                                                <input type="hidden" value="<%= topics[i]._id %>" name="topicId">
+                                                <a class="tm-btn tm-btn-primary-accept tm-btn-small"
+                                                    style="color: white; float: right; margin-left: 5px;"
+                                                    href="/forum/<%= topics[i]._id %>">Update</a>
+                                                <button class="tm-btn tm-btn-primary-forum tm-btn-small"
+                                                    style="float: right;" type="submit" value="Delete"
+                                                    name="method">Delete</button>
+                                                <% } %>
+                                                    <% if (req.user.role==="Moderator" && topics[i].creator !=="Nicroo"
+                                                        ) { %>
+                                                        <input type="hidden" value="<%= topics[i]._id %>"
+                                                            name="topicId">
+                                                        <a class="tm-btn tm-btn-primary-accept tm-btn-small"
+                                                            style="color: white; float: right; margin-left: 5px;"
+                                                            href="/forum/<%= topics[i]._id %>">Update</a>
+                                                        <button class="tm-btn tm-btn-primary-forum tm-btn-small"
+                                                            style="float: right;" type="submit" value="Delete"
+                                                            name="method">Delete</button>
+                                                        <% } %>
+                                                            <% } %>
+
+                                    </form>
+                                </div>
+                            </article>
+                            <% } } %>
+                                <!-- Rate Products Topic -->
+                                <article class="col-12 col-md-6 tm-post">
+                                    <hr class="tm-hr-primary">
+                                    <a href="/ratings" class="effect-lily tm-post-link tm-pt-60">
+                                        <div class="tm-post-link-inner">
+                                            <img src="images/shop/shoe-rate.jpg" alt="Topic Image"
+                                                style="max-width: 500px; max-height: 500px; min-width: 400px;">
+                                        </div>
+                                        <span class="position-absolute tm-new-badge">Rate Products</span>
+                                        <h2 class="tm-pt-30 tm-color-primary tm-post-title"
+                                            style="overflow-wrap: break-word;">
+                                            Fashlytical Rate Products
+                                        </h2>
+                                    </a>
+                                    <p class="tm-pt-30" style="overflow-wrap: break-word;">
+                                        Here you can rate our amazing products!
+                                    </p>
+                                    <form method="POST" action="/userProfile">
+                                        <div class="d-flex justify-content-between tm-pt-20">
+                                            <input type="hidden" value="" name="creatorName">
+                                            <span class="tm-color-primary">Creator:<button class="custompfp"
+                                                    type="submit">
+                                                    Nicroo
+                                                </button></span>
+                                            <span class="tm-color-primary">Created at 2022-03-03</span>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                </article>
+                </div>
+            </div>
+            <% if (isAuthenticated && req.user.role==="Admin" || isAuthenticated && req.user.role==="Moderator" ) { %>
+                <div class="row tm-row tm-mt-100 tm-mb-75">
+                    <div class="tm-prev-next-wrapper">
+                        <button type="button" class="tm-btn tm-btn-primary tm-btn-small" data-toggle="modal"
+                            data-target="#CreateModal">Create New Topic</button>
+                    </div>
+                    <div class="tm-paging-wrapper">
+                        <nav class="tm-paging-nav d-inline-block">
+                            <ul>
+                                <li class="tm-paging-item">
+                                    <a class="mb-2 tm-btn tm-paging-link" id="left" name="left" value="left"
+                                        href="http://localhost:3000/forum?page=<%= previousPage %>"><i
+                                            class="fas fa-arrow-left"></i></a>
+                                </li>
+                                <li class="tm-paging-item">
+                                    <a class="mb-2 tm-btn tm-paging-link" id="right" name="right" value="right"
+                                        href="http://localhost:3000/forum?page=<%= nextPage %>"><i
+                                            class="fas fa-arrow-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Create New Topic Modal -->
+                <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close d-flex align-items-center justify-content-center"
+                                    data-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <% if (!req.user.profilePicture) { %>
+                                    <div class="icon d-flex align-items-center justify-content-center">
+                                        <img src="/images/shop/default.jpg" alt="Profile Picture"
+                                            style="height: 150px; width: 150px;" class="pfp">
+                                    </div>
+                                    <% } else { %>
+                                        <div class="icon d-flex align-items-center justify-content-center">
+                                            <img src="<%= user.profilePicture %>" alt="Profile Picture"
+                                                style="height: 150px; width: 150px;" class="pfp">
+                                        </div>
+                                        <% } %>
+                                            <h3 class="text-center mb-4"
+                                                style="color: #099; font-weight: 450; font-size: 35px;">
+                                                Create New Topic</h3>
+                                            <form action="/forum" method="POST" enctype="multipart/form-data">
+                                                <div class="form-group d-flex">
+                                                    <input type="text" id="title" name="title"
+                                                        class="form-control rounded-left" placeholder="Topic Title"
+                                                        minlength="5" maxlength="30" required>
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <textarea class="form-control rounded-left" name="description"
+                                                        id="description" rows="8" minlength="20" maxlength="200"
+                                                        placeholder="Topic Description"
+                                                        style="max-height: 300px; min-height: 150px;"
+                                                        required></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <p style="font-size: 20px;">Add Topic Picture:</p>
+                                                    <label for="image" class="tm-btn tm-btn-primary tm-btn-small"
+                                                        style="margin-right: 5px;">
+                                                        <input type="file" name="topic" id="image"
+                                                            style="margin-bottom: 20px; display: none;">
+                                                        Choose File</label>
+                                                    <span><strong>Chosen File: </strong>
+                                                        <span id="msg">none</span></span><br>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="tm-btn tm-btn-primary tm-btn-small"
+                                                        style="position: relative; left: 31%;">Create Topic</button>
+                                                </div>
+                                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } else { %>
+                    <div class="row tm-row tm-mt-100 tm-mb-75">
+                        <div class="tm-prev-next-wrapper"></div>
+                        <div class="tm-paging-wrapper" style="position: absolute; left: 50%;">
+                            <nav class="tm-paging-nav d-inline-block">
+                                <ul>
+                                    <li class="tm-paging-item">
+                                        <a class="mb-2 tm-btn tm-paging-link" id="left" name="left" value="left"
+                                            href="http://localhost:3000/forum?page=<%= previousPage %>"><i
+                                                class="fas fa-arrow-left"></i></a>
+                                    </li>
+                                    <li class="tm-paging-item">
+                                        <a class="mb-2 tm-btn tm-paging-link" id="right" name="right" value="right"
+                                            href="http://localhost:3000/forum?page=<%= nextPage %>"><i
+                                                class="fas fa-arrow-right"></i></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <% } %>
+                        <%- include('../includes/forumfooter.ejs') %>
+        </main>
+    </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/forum-script.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/post.js"></script>
+    <script>
+        let pfp = document.getElementById('image');
+        let msg = document.getElementById('msg');
+        pfp.addEventListener('change', function (e) {
+            msg.textContent = e.target.files[0].name;
+        });
+    </script>
+    </body>
+
+    </html>
